@@ -1,17 +1,10 @@
 const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
-const REGION = "us-east-2";
 const fs = require("fs");
 const path = require("path");
 
-const file = __dirname + "/hello.txt";
-const fileStream = fs.createReadStream(file);
-
-fileStream.on("error", function (err) {
-  console.log("File Error", err);
-});
 dotenv.config({ path: __dirname + "/AWS_PROFILE.env" });
-AWS.config.update({ region: REGION });
+AWS.config.update({ region: process.env.REGION });
 
 let s3;
 let bucketName;
@@ -37,10 +30,15 @@ module.exports.initialize = async function () {
   }
 };
 
-module.exports.uploadImage = async () => {
+module.exports.uploadImage = async (image) => {
+  const fileStream = fs.createReadStream(image);
+  fileStream.on("error", function (err) {
+    console.log("File Error", err);
+  });
+
   uploadParams = {
     Bucket: bucketName,
-    Key: path.basename(file),
+    Key: path.basename(image),
     Body: fileStream,
   };
 
@@ -51,5 +49,25 @@ module.exports.uploadImage = async () => {
     if (data) {
       console.log(data.Location);
     }
+  });
+};
+
+module.exports.getImages = () => {
+  return new Promise((resolve, reject) => {
+    s3.listObjects({ Bucket: bucketName }, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        let imageUrls = [];
+        data.Contents.forEach((item) => {
+          let url = s3.getSignedUrl("getObject", {
+            Bucket: bucketName,
+            Key: item.Key,
+          });
+          imageUrls.push(url);
+        });
+        resolve(imageUrls);
+      }
+    });
   });
 };

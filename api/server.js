@@ -1,6 +1,6 @@
 const express = require("express");
 const multer = require("multer");
-const { initialize, uploadImage } = require("./data-service");
+const { initialize, uploadImage, getImages } = require("./data-service");
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
 const bodyParser = require("body-parser");
@@ -14,8 +14,14 @@ app.get("/", async (req, res) => {
   res.send("hello world!");
 });
 
-app.get("/images", (req, res) => {
-  res.send("Images here");
+app.get("/images", async (req, res) => {
+  getImages()
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 });
 
 app.get("/image/:id", (req, res) => {});
