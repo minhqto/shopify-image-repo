@@ -22,11 +22,17 @@ const ImageRepoNavbar = (props) => {
     <div>
       <Navbar color="light" light expand="md">
         <NavbarBrand href="/">Imagify</NavbarBrand>
-        <Nav navbar>
-          <NavItem>
-            <NavLink href="/images">All Images</NavLink>
-          </NavItem>
-        </Nav>
+        <NavbarToggler onClick={toggle} />
+        <Collapse selected={selected} navbar>
+          <Nav navbar>
+            <NavItem>
+              <NavLink href="/images">All Images</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/addImages">Add Images</NavLink>
+            </NavItem>
+          </Nav>
+        </Collapse>
       </Navbar>
     </div>
   );

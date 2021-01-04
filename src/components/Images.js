@@ -14,15 +14,17 @@ import axios from "axios";
 
 const Images = () => {
   const [imgID, setImgID] = useState(0);
-  const [images, setImages] = useState([{ id: 0, imgUrl: "" }]);
+  const [images, setImages] = useState([{ id: 1, imgUrl: "" }]);
 
   useEffect(() => {
-    axios("http://localhost:8080/images").then((result) => {
-      result.data.forEach((imgUrl) => {
-        let tempImg = { id: imgID, imgUrl: imgUrl };
+    axios("http://localhost:8080/api/images").then((result) => {
+      let allImages = [];
+      result.data.forEach((image) => {
+        let tempImg = { id: imgID, imgUrl: image.url, imgName: image.name };
         setImgID(imgID + 1);
-        setImages((prevImages) => [...prevImages, tempImg]);
+        allImages.push(tempImg);
       });
+      setImages(allImages);
     });
   }, []);
 
@@ -31,7 +33,7 @@ const Images = () => {
       <Row>
         {images ? (
           images.map((img, index) => (
-            <Col xs="3" key={img.id}>
+            <Col xs="3" key={index}>
               <Card>
                 <CardImg
                   top
@@ -39,6 +41,7 @@ const Images = () => {
                   src={img.imgUrl}
                   alt="Card image cap"
                 />
+                <CardText>{img.imgName}</CardText>
               </Card>
             </Col>
           ))

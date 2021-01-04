@@ -1,20 +1,18 @@
 const express = require("express");
-const multer = require("multer");
 const { initialize, uploadImage, getImages } = require("./data-service");
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
-const bodyParser = require("body-parser");
 const cors = require("cors");
+const multer = require("multer");
 
-app.use(bodyParser.urlencoded({ extended: true }));
-
+const upload = multer();
 app.use(cors());
 
 app.get("/", async (req, res) => {
   res.send("hello world!");
 });
 
-app.get("/images", async (req, res) => {
+app.get("/api/images", async (req, res) => {
   getImages()
     .then((response) => {
       res.status(200).send(response);
@@ -24,18 +22,29 @@ app.get("/images", async (req, res) => {
     });
 });
 
-app.get("/image/:id", (req, res) => {});
+app.get("/api/image/:id", (req, res) => {});
 
-app.post("/uploadImage", async (req, res) => {
-  let response = await uploadImage();
-  if (response) {
-    res.status(200).send("OK");
+app.post(
+  "/api/uploadImage",
+  upload.array("imageFile", 10),
+  (req, res, next) => {
+    if (req.files) {
+      req.files.forEach((file) => {
+        uploadImage(file)
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+    }
   }
-});
+);
 
-app.put("/image/:id", (req, res) => {});
+app.put("/api/image/:id", (req, res) => {});
 
-app.delete("/image/:id", (req, res) => {});
+app.delete("/api/image/:id", (req, res) => {});
 
 app.listen(HTTP_PORT, async () => {
   console.log(`App listening on ${HTTP_PORT}`);
