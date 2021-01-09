@@ -34,6 +34,7 @@ const ImageRepoNavbar = (props) => {
           </Nav>
         </Collapse>
       </Navbar>
+      <br></br>
     </div>
   );
 };

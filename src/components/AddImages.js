@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Container,
   Col,
@@ -13,7 +13,6 @@ import axios from "axios";
 import FormData from "form-data";
 
 const AddImages = () => {
-  const [imageName, setImagename] = useState("");
   const [imagesToUpload, setImagesToUpload] = useState([]);
 
   //header is required for axios post requests to work with multipart/form-data

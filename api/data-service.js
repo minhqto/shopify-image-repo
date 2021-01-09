@@ -1,6 +1,5 @@
 const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
-const fs = require("fs");
 const path = require("path");
 const { Readable } = require("stream");
 
@@ -52,17 +51,16 @@ module.exports.initialize = async function () {
 
 module.exports.uploadImage = (image) => {
   return new Promise((resolve, reject) => {
-    let fileStream;
-    fileStream = new Readable({
+    let fileStream = new Readable({
       read() {
         this.push(image.buffer);
         this.push(null); //signals end of stream
       },
     });
-
+    let lowercaseImageName = image.originalname.toLowerCase(); //set all characters to lowercase to accommodate for browsers automatically change the caps of params
     uploadParams = {
       Bucket: bucketName,
-      Key: path.basename(image.originalname),
+      Key: path.basename(lowercaseImageName),
       Body: fileStream,
     };
 
@@ -97,6 +95,40 @@ module.exports.getImages = () => {
           images.push(image);
         });
         resolve(images);
+      }
+    });
+  });
+};
+
+module.exports.getImage = (imgKey) => {
+  return new Promise((resolve, reject) => {
+    let awsParams = {
+      Bucket: bucketName,
+      Key: imgKey,
+    };
+
+    s3.getObject(awsParams, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        let imageUrl = s3.getSignedUrl("getObject", awsParams);
+        resolve(imageUrl);
+      }
+    });
+  });
+};
+
+module.exports.deleteImage = (imgName) => {
+  return new Promise((resolve, reject) => {
+    let awsParams = {
+      Bucket: bucketName,
+      Key: imgName,
+    };
+    s3.deleteObject(awsParams, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
       }
     });
   });

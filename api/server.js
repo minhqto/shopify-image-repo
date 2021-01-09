@@ -1,5 +1,11 @@
 const express = require("express");
-const { initialize, uploadImage, getImages } = require("./data-service");
+const {
+  initialize,
+  uploadImage,
+  getImages,
+  getImage,
+  deleteImage,
+} = require("./data-service");
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
 const cors = require("cors");
@@ -22,7 +28,15 @@ app.get("/api/images", async (req, res) => {
     });
 });
 
-app.get("/api/image/:id", (req, res) => {});
+app.get("/api/image/:id", (req, res) => {
+  getImage(req.params.id)
+    .then((img) => {
+      res.status(200).send(img);
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+    });
+});
 
 app.post(
   "/api/uploadImage",
@@ -32,10 +46,10 @@ app.post(
       req.files.forEach((file) => {
         uploadImage(file)
           .then((response) => {
-            console.log(response);
+            res.status(200).send(response);
           })
           .catch((err) => {
-            console.log(err);
+            res.status(500).send(err);
           });
       });
     }
@@ -44,7 +58,15 @@ app.post(
 
 app.put("/api/image/:id", (req, res) => {});
 
-app.delete("/api/image/:id", (req, res) => {});
+app.delete("/api/image/:id", (req, res) => {
+  deleteImage(req.params.id)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
 
 app.listen(HTTP_PORT, async () => {
   console.log(`App listening on ${HTTP_PORT}`);
