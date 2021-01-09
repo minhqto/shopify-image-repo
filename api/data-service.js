@@ -34,7 +34,6 @@ module.exports.initialize = async function () {
     s3 = new AWS.S3({
       apiVersion: "2006-03-01",
     });
-
     s3.listBuckets(function (err, data) {
       if (err) {
         console.log(err);
@@ -42,7 +41,6 @@ module.exports.initialize = async function () {
         bucketName = data.Buckets[0].Name;
       }
     });
-
     return s3;
   } catch (err) {
     console.log(`Could not initialize ${err}`);

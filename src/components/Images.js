@@ -16,6 +16,7 @@ const Images = () => {
   const [imgID, setImgID] = useState(0);
   const [images, setImages] = useState([{ id: 1, imgUrl: "" }]);
   const history = useHistory();
+
   useEffect(() => {
     axios(`${config.apiUrl}/images`).then((result) => {
       let allImages = [];
@@ -36,15 +37,8 @@ const Images = () => {
     axios
       .delete(`${config.apiUrl}/image/${imgName}`)
       .then((response) => {
-        axios(`${config.apiUrl}/images`).then((result) => {
-          let allImages = [];
-          result.data.forEach((image) => {
-            let tempImg = { id: imgID, imgUrl: image.url, imgName: image.name };
-            setImgID(imgID + 1);
-            allImages.push(tempImg);
-          });
-          setImages(allImages);
-        });
+        let updatedImages = images.filter((img) => img.imgName != imgName);
+        setImages(updatedImages);
       })
       .catch((err) => {
         console.log(err);
@@ -62,7 +56,6 @@ const Images = () => {
                   top
                   width="100%"
                   src={img.imgUrl}
-                  alt="Card image cap"
                   onClick={() => handleCardClick(img.imgName)}
                 />
                 <CardText>{img.imgName}</CardText>
