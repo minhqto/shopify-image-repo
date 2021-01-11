@@ -11,7 +11,7 @@ import {
 } from "reactstrap";
 import axios from "axios";
 import FormData from "form-data";
-
+import config from "../config/config";
 const AddImages = () => {
   const [imagesToUpload, setImagesToUpload] = useState([]);
 
@@ -23,7 +23,7 @@ const AddImages = () => {
     imagesToUpload.forEach((img) => {
       formData.append("imageFile", img);
     });
-    axios.post("http://localhost:8080/api/uploadImage", formData, {
+    axios.post(`${config.apiUrl}/uploadImage`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

@@ -15,7 +15,7 @@ const upload = multer();
 app.use(cors());
 
 app.get("/", async (req, res) => {
-  res.send("hello world!");
+  res.send("Welcome to the Imagify API!");
 });
 
 app.get("/api/images", async (req, res) => {

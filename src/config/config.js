@@ -1,5 +1,5 @@
 const config = {
-  apiUrl: "http://localhost:8080/api",
+  apiUrl: "https://secure-shelf-55979.herokuapp.com/api",
 };
 
 export default config;
