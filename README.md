@@ -1,7 +1,7 @@
-#Imagify - Shopify's Winter 2021 Backend Developer Intern Challenge
+# Imagify - Shopify's Winter 2021 Backend Developer Intern Challenge
 
 Built using:
-nodeJS
+Node.js
 React
 
 Images stored on AWS S3
