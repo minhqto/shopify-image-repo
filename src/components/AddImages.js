@@ -9,6 +9,7 @@ import {
   Input,
   FormText,
   Alert,
+  Progress,
 } from "reactstrap";
 import axios from "axios";
 import FormData from "form-data";
@@ -18,22 +19,37 @@ import { useHistory } from "react-router-dom";
 const AddImages = () => {
   const [imagesToUpload, setImagesToUpload] = useState([]);
   const [errorMsg, setErrorMsg] = useState({});
+  const [hideStatusBar, setHideStatusBar] = useState(true);
   const history = useHistory();
-  //header is required for axios post requests to work with multipart/form-data
+  let percentCompleted;
   const handleSubmit = (event) => {
     event.preventDefault();
+    setHideStatusBar(false);
     let formData = new FormData();
-
     imagesToUpload.forEach((img) => {
       formData.append("imageFile", img);
     });
     axios
-      .post(`${config.apiUrl}/uploadImage`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
+      .post(
+        `${config.apiUrl}/uploadImage`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         },
-      })
-      .then(() => {
+        {
+          onDownloadProgress: (progressEvent) => {
+            const total = parseFloat(
+              progressEvent.currentTarget.responseHeaders["Content-Length"]
+            );
+            const current = progressEvent.currentTarget.response.length;
+
+            percentCompleted = Math.floor((current / total) * 100);
+          },
+        }
+      )
+      .then((response) => {
         history.push("/images");
       })
       .catch((err) => {
@@ -43,7 +59,12 @@ const AddImages = () => {
 
   const handleChange = (event) => {
     let imgArr = Array.from(event.target.files);
-    setImagesToUpload(imgArr);
+    if (imgArr.length > 50) {
+      alert("You can only upload a max of 50 images!");
+      history.push("/addImages");
+    } else {
+      setImagesToUpload(imgArr);
+    }
   };
 
   return (
@@ -72,6 +93,8 @@ const AddImages = () => {
           <Alert color="danger">{errorMsg.message} </Alert>
         ) : null}
       </Form>
+      <br></br>
+      <Progress hidden={hideStatusBar} animated value={percentCompleted} />
     </Container>
   );
 };

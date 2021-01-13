@@ -10,6 +10,39 @@ let s3;
 let bucketName;
 let uploadParams;
 
+// helper functions
+const setFileStreams = (images) => {
+  let imageObjects = [];
+  images.forEach((img) => {
+    let imageObj = {};
+    let fileStream = new Readable({
+      read() {
+        this.push(img.buffer);
+        this.push(null); //signals end of stream
+      },
+    });
+    imageObj.stream = fileStream;
+    imageObj.imageName = img.originalname.toLowerCase(); //set all characters to lowercase to accommodate for browsers automatically change the caps of params
+    imageObjects.push(imageObj);
+  });
+  return imageObjects;
+};
+
+const setUploadParams = (imageObjects) => {
+  let params = [];
+  imageObjects.forEach((imageObj) => {
+    let uploadParam = {};
+    uploadParam = {
+      Bucket: bucketName,
+      Key: path.basename(imageObj.imageName),
+      Body: imageObj.stream,
+    };
+    params.push(uploadParam);
+  });
+
+  return params;
+};
+
 const uploadToS3 = (s3params) => {
   return new Promise((resolve, reject) => {
     s3.upload(s3params, (err, data) => {
@@ -29,6 +62,7 @@ const uploadToS3 = (s3params) => {
   });
 };
 
+// exposed functions
 module.exports.initialize = async function () {
   try {
     s3 = new AWS.S3({
@@ -47,32 +81,15 @@ module.exports.initialize = async function () {
   }
 };
 
-module.exports.uploadImage = (image) => {
+module.exports.uploadImages = (images) => {
   return new Promise((resolve, reject) => {
-    let fileStream = new Readable({
-      read() {
-        this.push(image.buffer);
-        this.push(null); //signals end of stream
-      },
+    let fileStreams = setFileStreams(images);
+    let allUploadParams = setUploadParams(fileStreams);
+    let uploadedImages = [];
+    allUploadParams.forEach((param) => {
+      uploadedImages.push(uploadToS3(param));
     });
-    let lowercaseImageName = image.originalname.toLowerCase(); //set all characters to lowercase to accommodate for browsers automatically change the caps of params
-    uploadParams = {
-      Bucket: bucketName,
-      Key: path.basename(lowercaseImageName),
-      Body: fileStream,
-    };
-
-    uploadToS3(uploadParams)
-      .then((result) => {
-        if (!result.uploaded) {
-          reject(result.error);
-        } else {
-          resolve(result.data);
-        }
-      })
-      .catch((err) => {
-        console.log(err.error);
-      });
+    resolve(Promise.all(uploadedImages));
   });
 };
 

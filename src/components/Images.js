@@ -7,7 +7,7 @@ import {
   CardText,
   CardImg,
   Button,
-  Spinner,
+  Alert,
 } from "reactstrap";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
@@ -48,8 +48,9 @@ const Images = () => {
 
   return (
     <Container>
+      <Alert color="light">Click on images to see larger version!</Alert>
       <Row>
-        {images ? (
+        {images.length > 0 ? (
           images.map((img, index) => (
             <Col xs="3" key={index}>
               <Card body outline>
@@ -60,9 +61,9 @@ const Images = () => {
                   onClick={() => handleCardClick(img.imgName)}
                 />
                 <CardText>{img.imgName}</CardText>
-                <Button outline color="primary" onClick={() => {}}>
+                {/* <Button outline color="primary" onClick={() => {}}>
                   Edit
-                </Button>
+                </Button> */}
                 &nbsp;
                 <Button
                   outline
@@ -76,7 +77,11 @@ const Images = () => {
             </Col>
           ))
         ) : (
-          <p>loading...</p>
+          <div>
+            <Alert color="info">
+              No images here :( Click "Add Images" to start adding some
+            </Alert>
+          </div>
         )}
       </Row>
     </Container>

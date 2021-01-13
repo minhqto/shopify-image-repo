@@ -1,7 +1,7 @@
 const express = require("express");
 const {
   initialize,
-  uploadImage,
+  uploadImages,
   getImages,
   getImage,
   deleteImage,
@@ -43,15 +43,14 @@ app.post(
   upload.array("imageFile", 50),
   (req, res, next) => {
     if (req.files) {
-      req.files.forEach((file) => {
-        uploadImage(file)
-          .then((response) => {
-            res.status(200).send(response);
-          })
-          .catch((err) => {
-            res.status(500).send(err);
-          });
-      });
+      uploadImages(req.files)
+        .then((response) => {
+          console.log(response);
+          res.status(200).send(response);
+        })
+        .catch((err) => {
+          res.status(500).json(err);
+        });
     }
   }
 );

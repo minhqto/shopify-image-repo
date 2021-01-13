@@ -1,13 +1,5 @@
 import { React, useState, useEffect } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  CardImg,
-  CardText,
-  Button,
-} from "reactstrap";
+import { Container, Row, Col, Media, Spinner } from "reactstrap";
 import { useParams } from "react-router";
 import axios from "axios";
 import config from "../config/config";
@@ -15,7 +7,10 @@ import config from "../config/config";
 const Image = () => {
   let { id } = useParams();
   const [imageUrl, setImageUrl] = useState("");
-
+  const imgStyle = {
+    maxHeight: 1000,
+    maxWidth: 1000,
+  };
   useEffect(() => {
     axios.get(`${config.apiUrl}/image/${id}`).then((response) => {
       if (response.status === 200) {
@@ -28,14 +23,13 @@ const Image = () => {
     <Container>
       <Row>
         <Col xs="3">
-          {imageUrl ? (
-            <Card>
-              <CardImg top width="100%" alt="Card image cap" src={imageUrl} />
-              <CardText>{}</CardText>
-            </Card>
-          ) : (
-            <p>Image not found!</p>
-          )}
+          <div styles="width:800; height:800;">
+            {imageUrl ? (
+              <Media src={imageUrl} style={imgStyle} />
+            ) : (
+              <Spinner color="primary" />
+            )}
+          </div>
         </Col>
       </Row>
     </Container>
