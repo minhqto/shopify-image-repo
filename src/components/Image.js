@@ -15,11 +15,11 @@ import config from "../config/config";
 const Image = () => {
   let { id } = useParams();
   const [imageUrl, setImageUrl] = useState("");
+
   useEffect(() => {
     axios.get(`${config.apiUrl}/image/${id}`).then((response) => {
-      if (response.status == 200) {
+      if (response.status === 200) {
         setImageUrl(response.data);
-        console.log(response);
       }
     });
   }, []);

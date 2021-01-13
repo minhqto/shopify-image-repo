@@ -40,7 +40,7 @@ app.get("/api/image/:id", (req, res) => {
 
 app.post(
   "/api/uploadImage",
-  upload.array("imageFile", 10),
+  upload.array("imageFile", 50),
   (req, res, next) => {
     if (req.files) {
       req.files.forEach((file) => {

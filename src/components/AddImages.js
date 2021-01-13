@@ -8,13 +8,17 @@ import {
   Label,
   Input,
   FormText,
+  Alert,
 } from "reactstrap";
 import axios from "axios";
 import FormData from "form-data";
 import config from "../config/config";
+import { useHistory } from "react-router-dom";
+
 const AddImages = () => {
   const [imagesToUpload, setImagesToUpload] = useState([]);
-
+  const [errorMsg, setErrorMsg] = useState({});
+  const history = useHistory();
   //header is required for axios post requests to work with multipart/form-data
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -23,11 +27,18 @@ const AddImages = () => {
     imagesToUpload.forEach((img) => {
       formData.append("imageFile", img);
     });
-    axios.post(`${config.apiUrl}/uploadImage`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    axios
+      .post(`${config.apiUrl}/uploadImage`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then(() => {
+        history.push("/images");
+      })
+      .catch((err) => {
+        setErrorMsg(err);
+      });
   };
 
   const handleChange = (event) => {
@@ -51,12 +62,15 @@ const AddImages = () => {
               multiple
             />
             <FormText color="muted">
-              Upload your .jpeg, .png, .gif files
+              Upload your .jpeg, .png, .gif files. You can select up to 50
+              images at once!
             </FormText>
           </Col>
         </FormGroup>
-
         <Button type="submit">Submit</Button>
+        {errorMsg.message ? (
+          <Alert color="danger">{errorMsg.message} </Alert>
+        ) : null}
       </Form>
     </Container>
   );

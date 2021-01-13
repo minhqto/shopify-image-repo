@@ -7,22 +7,23 @@ import {
   CardText,
   CardImg,
   Button,
+  Spinner,
 } from "reactstrap";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import config from "../config/config";
 
 const Images = () => {
-  const [imgID, setImgID] = useState(0);
-  const [images, setImages] = useState([{ id: 1, imgUrl: "" }]);
+  const [images, setImages] = useState([]);
   const history = useHistory();
 
   useEffect(() => {
     axios(`${config.apiUrl}/images`).then((result) => {
       let allImages = [];
+      let imgID = 1;
       result.data.forEach((image) => {
         let tempImg = { id: imgID, imgUrl: image.url, imgName: image.name };
-        setImgID(imgID + 1);
+        imgID++;
         allImages.push(tempImg);
       });
       setImages(allImages);
@@ -37,7 +38,7 @@ const Images = () => {
     axios
       .delete(`${config.apiUrl}/image/${imgName}`)
       .then((response) => {
-        let updatedImages = images.filter((img) => img.imgName != imgName);
+        let updatedImages = images.filter((img) => img.imgName !== imgName);
         setImages(updatedImages);
       })
       .catch((err) => {
