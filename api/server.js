@@ -14,8 +14,11 @@ const multer = require("multer");
 const upload = multer();
 app.use(cors());
 
+let bucketName;
 app.get("/", async (req, res) => {
-  res.send(`Welcome to the Imagify API!. You're currently using bucket ${res}`);
+  res.send(
+    `Welcome to the Imagify API! You're currently using bucket ${bucketName}`
+  );
 });
 
 app.get("/api/images", async (req, res) => {
@@ -66,16 +69,14 @@ app.delete("/api/image/:id", (req, res) => {
     });
 });
 
-app.listen(HTTP_PORT, async () => {
+app.listen(HTTP_PORT, () => {
   console.log(`App listening on ${HTTP_PORT}`);
-  try {
-    let res = await initialize();
-    if (res) {
-      console.log("S3 instance created");
-    } else {
-      console.log("S3 instance failed");
-    }
-  } catch (err) {
-    console.log(err);
-  }
+  initialize()
+    .then((res) => {
+      console.log(`S3 instance created. You're currently using bucket ${res}`);
+      bucketName = res;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
