@@ -45,7 +45,6 @@ app.post(
     if (req.files) {
       uploadImages(req.files)
         .then((response) => {
-          console.log(response);
           res.status(200).send(response);
         })
         .catch((err) => {

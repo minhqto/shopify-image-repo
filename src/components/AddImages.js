@@ -20,8 +20,9 @@ const AddImages = () => {
   const [imagesToUpload, setImagesToUpload] = useState([]);
   const [errorMsg, setErrorMsg] = useState({});
   const [hideStatusBar, setHideStatusBar] = useState(true);
+  const [percentCompleted, setPercentCompleted] = useState(0);
   const history = useHistory();
-  let percentCompleted;
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setHideStatusBar(false);
@@ -30,25 +31,25 @@ const AddImages = () => {
       formData.append("imageFile", img);
     });
     axios
-      .post(
-        `${config.apiUrl}/uploadImage`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
-        {
-          onDownloadProgress: (progressEvent) => {
-            const total = parseFloat(
-              progressEvent.currentTarget.responseHeaders["Content-Length"]
+      .post(`${config.apiUrl}/uploadImage`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        }, //credit goes to https://github.com/chancet1982/vue-loadingbar/blob/master/src/components/LoadingBar.vue
+        onUploadProgress: (progressEvent) => {
+          const totalLength = progressEvent.lengthComputable
+            ? progressEvent.total
+            : progressEvent.target.getResponseHeader("content-length") ||
+              progressEvent.target.getResponseHeader(
+                "x-decompressed-content-length"
+              );
+          if (totalLength !== null) {
+            let completed = Math.round(
+              (progressEvent.loaded * 100) / totalLength
             );
-            const current = progressEvent.currentTarget.response.length;
-
-            percentCompleted = Math.floor((current / total) * 100);
-          },
-        }
-      )
+            setPercentCompleted(completed);
+          }
+        },
+      })
       .then((response) => {
         history.push("/images");
       })

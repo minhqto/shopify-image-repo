@@ -48,7 +48,15 @@ const Images = () => {
 
   return (
     <Container>
-      <Alert color="light">Click on images to see larger version!</Alert>
+      <Row>
+        <Col xs="10">
+          <Alert color="light">Click on images to see larger version!</Alert>
+        </Col>
+        <Col xs="2">
+          <Button color="danger">Nuke em!</Button>
+        </Col>
+      </Row>
+
       <Row>
         {images.length > 0 ? (
           images.map((img, index) => (
