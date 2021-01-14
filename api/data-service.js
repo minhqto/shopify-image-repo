@@ -75,7 +75,7 @@ module.exports.initialize = async function () {
         bucketName = data.Buckets[0].Name;
       }
     });
-    return s3;
+    return { s3: s3, bucketName: bucketName };
   } catch (err) {
     console.log(`Could not initialize ${err}`);
   }
