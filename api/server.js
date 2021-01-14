@@ -15,9 +15,7 @@ const upload = multer();
 app.use(cors());
 
 app.get("/", async (req, res) => {
-  res.send(
-    `Welcome to the Imagify API!. You're currently using bucket ${res.bucketName}`
-  );
+  res.send(`Welcome to the Imagify API!. You're currently using bucket ${res}`);
 });
 
 app.get("/api/images", async (req, res) => {
