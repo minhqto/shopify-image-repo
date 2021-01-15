@@ -22,7 +22,7 @@ const HTTP_PORT = process.env.PORT || 8080;
 const jwtSecret = process.env.JWTSECRET;
 dotenv.config({ path: __dirname + "/AWS_PROFILE.env" });
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: false }));
+app.use(cors({ credentials: true, origin: true }));
 
 app.use(
   jwtexpress({
