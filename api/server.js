@@ -22,7 +22,7 @@ const HTTP_PORT = process.env.PORT || 8080;
 const jwtSecret = process.env.JWTSECRET;
 dotenv.config({ path: __dirname + "/AWS_PROFILE.env" });
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: true }));
+app.use(cors({ credentials: true, origin: false }));
 
 app.use(
   jwtexpress({
@@ -31,9 +31,7 @@ app.use(
     getToken: (req) => req.cookies.token,
   }).unless({ path: ["/api/login", "/api/signup"] })
 );
-
 let bucketName;
-
 /*
  * Beginning of routes
  */
