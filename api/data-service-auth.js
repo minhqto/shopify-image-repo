@@ -52,4 +52,27 @@ module.exports.createUser = (userData) => {
   ]);
 };
 
-module.exports.authenticateUser = (userData) => {};
+module.exports.authenticateUser = (userData) => {
+  return new Promise((resolve, reject) => {
+    User.find({ username: userData.username })
+      .limit(1)
+      .exec()
+      .then((userReturned) => {
+        if (userReturned.length === 0) {
+          reject(`Unable to find user ${userData.username}`);
+        }
+        bcrypt
+          .compare(userData.password, userReturned[0].password)
+          .then((res) => {
+            if (res) {
+              resolve(userReturned[0]);
+            } else {
+              reject("Incorrect password for user " + userData.username);
+            }
+          });
+      })
+      .catch((err) => {
+        reject(`Unable to find user ${userData.username}`);
+      });
+  });
+};
