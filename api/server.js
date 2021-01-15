@@ -69,6 +69,10 @@ app.post("/api/signup", upload.none(), (req, res) => {
     });
 });
 
+app.post("/api/login", upload.none(), (req, res) => {
+  console.log(req.body);
+});
+
 app.put("/api/image/:id", (req, res) => {});
 
 app.delete("/api/image/:id", (req, res) => {
