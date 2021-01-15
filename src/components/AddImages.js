@@ -15,6 +15,7 @@ import axios from "axios";
 import FormData from "form-data";
 import config from "../config/config";
 import { useHistory } from "react-router-dom";
+import ImageRepoNavbar from "./Navbar";
 
 const AddImages = () => {
   const [imagesToUpload, setImagesToUpload] = useState([]);
@@ -32,25 +33,30 @@ const AddImages = () => {
     });
 
     axios
-      .post(`${config.apiUrl}/uploadImage`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        }, //credit goes to https://github.com/chancet1982/vue-loadingbar/blob/master/src/components/LoadingBar.vue
-        onUploadProgress: (progressEvent) => {
-          const totalLength = progressEvent.lengthComputable
-            ? progressEvent.total
-            : progressEvent.target.getResponseHeader("content-length") ||
-              progressEvent.target.getResponseHeader(
-                "x-decompressed-content-length"
+      .post(
+        `${config.apiUrl}/uploadImage`,
+        formData,
+        { withCredentials: true },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          }, //credit goes to https://github.com/chancet1982/vue-loadingbar/blob/master/src/components/LoadingBar.vue
+          onUploadProgress: (progressEvent) => {
+            const totalLength = progressEvent.lengthComputable
+              ? progressEvent.total
+              : progressEvent.target.getResponseHeader("content-length") ||
+                progressEvent.target.getResponseHeader(
+                  "x-decompressed-content-length"
+                );
+            if (totalLength !== null) {
+              let completed = Math.round(
+                (progressEvent.loaded * 100) / totalLength
               );
-          if (totalLength !== null) {
-            let completed = Math.round(
-              (progressEvent.loaded * 100) / totalLength
-            );
-            setPercentCompleted(completed);
-          }
-        },
-      })
+              setPercentCompleted(completed);
+            }
+          },
+        }
+      )
       .then((response) => {
         history.push("/images");
       })
@@ -71,6 +77,7 @@ const AddImages = () => {
 
   return (
     <Container>
+      <ImageRepoNavbar />
       <Form onSubmit={(event) => handleSubmit(event)}>
         <FormGroup row>
           <Label for="imageFile" sm={2}>

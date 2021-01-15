@@ -12,22 +12,25 @@ import {
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import config from "../config/config";
+import ImageRepoNavbar from "./Navbar";
 
 const Images = () => {
   const [images, setImages] = useState([]);
   const history = useHistory();
 
   useEffect(() => {
-    axios(`${config.apiUrl}/images`).then((result) => {
-      let allImages = [];
-      let imgID = 1;
-      result.data.forEach((image) => {
-        let tempImg = { id: imgID, imgUrl: image.url, imgName: image.name };
-        imgID++;
-        allImages.push(tempImg);
-      });
-      setImages(allImages);
-    });
+    axios(`${config.apiUrl}/images`, { withCredentials: true }).then(
+      (result) => {
+        let allImages = [];
+        let imgID = 1;
+        result.data.forEach((image) => {
+          let tempImg = { id: imgID, imgUrl: image.url, imgName: image.name };
+          imgID++;
+          allImages.push(tempImg);
+        });
+        setImages(allImages);
+      }
+    );
   }, []);
 
   const handleCardClick = (imgName) => {
@@ -36,7 +39,7 @@ const Images = () => {
 
   const handleDelete = (imgName) => {
     axios
-      .delete(`${config.apiUrl}/image/${imgName}`)
+      .delete(`${config.apiUrl}/image/${imgName}`, { withCredentials: true })
       .then((response) => {
         let updatedImages = images.filter((img) => img.imgName !== imgName);
         setImages(updatedImages);
@@ -46,27 +49,12 @@ const Images = () => {
       });
   };
 
-  const handleMassDelete = () => {
-    images.forEach((img) => {
-      handleDelete(img.imgName);
-    });
-  };
-
   return (
     <Container>
+      <ImageRepoNavbar />
       <Row>
         <Col xs="10">
           <Alert color="light">Click on images to see larger version!</Alert>
-        </Col>
-        <Col xs="2">
-          <Button
-            color="danger"
-            onClick={() => {
-              handleMassDelete();
-            }}
-          >
-            Nuke em!
-          </Button>
         </Col>
       </Row>
 

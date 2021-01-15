@@ -12,11 +12,13 @@ const Image = () => {
     maxWidth: 1000,
   };
   useEffect(() => {
-    axios.get(`${config.apiUrl}/image/${id}`).then((response) => {
-      if (response.status === 200) {
-        setImageUrl(response.data);
-      }
-    });
+    axios
+      .get(`${config.apiUrl}/image/${id}`, { withCredentials: true })
+      .then((response) => {
+        if (response.status === 200) {
+          setImageUrl(response.data);
+        }
+      });
   });
 
   return (

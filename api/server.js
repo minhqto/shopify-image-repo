@@ -1,11 +1,11 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const passport = require("passport");
-const passportJWT = require("passport-jwt");
+const jwtexpress = require("express-jwt");
 const cors = require("cors");
 const multer = require("multer");
 const upload = multer();
 const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
 
 const {
   initializeAWS,
@@ -16,31 +16,21 @@ const {
 } = require("./data-service");
 const { createUser, authenticateUser } = require("./data-service-auth");
 const { initializeMongo } = require("./data-service-auth");
-const { LeakAddTwoTone } = require("@material-ui/icons");
 
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
-
+const jwtSecret = process.env.JWTSECRET;
 dotenv.config({ path: __dirname + "/AWS_PROFILE.env" });
+app.use(cookieParser());
+app.use(cors({ credentials: true, origin: true }));
 
-const ExtractJwt = passportJWT.ExtractJwt;
-const JwtStrategy = passportJWT.Strategy;
-var jwtOptions = {};
-jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt");
-jwtOptions.secretOrKey = process.env.JWTSECRET;
-
-let strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
-  console.log("payload received", jwt_payload);
-  if (jwt_payload) {
-    next(null, { _id: jwt_payload._id, userName: jwt_payload.userName });
-  } else {
-    next(null, false);
-  }
-});
-
-passport.use(strategy);
-app.use(passport.initialize());
-app.use(cors());
+app.use(
+  jwtexpress({
+    secret: jwtSecret,
+    algorithms: ["HS256"],
+    getToken: (req) => req.cookies.token,
+  }).unless({ path: ["/api/login", "/api/signup"] })
+);
 
 let bucketName;
 
@@ -53,19 +43,15 @@ app.get("/", async (req, res) => {
   );
 });
 
-app.get(
-  "/api/images",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    getImages()
-      .then((response) => {
-        res.status(200).send(response);
-      })
-      .catch((err) => {
-        res.status(500).send(err);
-      });
-  }
-);
+app.get("/api/images", (req, res) => {
+  getImages()
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
 
 app.get("/api/image/:id", (req, res) => {
   getImage(req.params.id)
@@ -110,8 +96,8 @@ app.post("/api/login", upload.none(), (req, res) => {
         _id: response._id,
         username: response.username,
       };
-      let token = jwt.sign(payload, jwtOptions.secretOrKey);
-
+      let token = jwt.sign(payload, jwtSecret, { expiresIn: 3600 });
+      res.cookie("token", token, { httpOnly: false });
       res.status(200).json({ message: response, token: token });
     })
     .catch((err) => {
@@ -119,15 +105,19 @@ app.post("/api/login", upload.none(), (req, res) => {
     });
 });
 
-app.delete("/api/image/:id", (req, res) => {
-  deleteImage(req.params.id)
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-});
+app.delete(
+  "/api/image/:id",
+
+  (req, res) => {
+    deleteImage(req.params.id)
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        res.status(500).send(err);
+      });
+  }
+);
 
 app.delete("/api/images", (req, res) => {});
 

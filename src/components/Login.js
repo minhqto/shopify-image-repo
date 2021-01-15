@@ -62,12 +62,15 @@ export default function Login() {
     formData.append("username", account.username);
     formData.append("password", account.password);
     axios
-      .post(`${config.apiUrl}/login`, formData)
+      .post(`${config.apiUrl}/login`, formData, {
+        withCredentials: true,
+      })
       .then((response) => {
-        console.log(response);
+        history.push("/images");
       })
       .catch((err) => {
-        setErrorMessage(err.response.data.message);
+        console.log(err.message);
+        setErrorMessage("Incorrect user credentials!");
         setIsError(true);
       });
   };
