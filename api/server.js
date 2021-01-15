@@ -44,6 +44,7 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/api/images", (req, res) => {
+  console.log(process.env.JWTSECRET);
   getImages()
     .then((response) => {
       res.status(200).send(response);
