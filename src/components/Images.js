@@ -46,6 +46,12 @@ const Images = () => {
       });
   };
 
+  const handleMassDelete = () => {
+    images.forEach((img) => {
+      handleDelete(img.imgName);
+    });
+  };
+
   return (
     <Container>
       <Row>
@@ -53,7 +59,14 @@ const Images = () => {
           <Alert color="light">Click on images to see larger version!</Alert>
         </Col>
         <Col xs="2">
-          <Button color="danger">Nuke em!</Button>
+          <Button
+            color="danger"
+            onClick={() => {
+              handleMassDelete();
+            }}
+          >
+            Nuke em!
+          </Button>
         </Col>
       </Row>
 
@@ -69,10 +82,7 @@ const Images = () => {
                   onClick={() => handleCardClick(img.imgName)}
                 />
                 <CardText>{img.imgName}</CardText>
-                {/* <Button outline color="primary" onClick={() => {}}>
-                  Edit
-                </Button> */}
-                &nbsp;
+
                 <Button
                   outline
                   onClick={() => {

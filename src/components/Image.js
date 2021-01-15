@@ -17,7 +17,7 @@ const Image = () => {
         setImageUrl(response.data);
       }
     });
-  }, []);
+  });
 
   return (
     <Container>

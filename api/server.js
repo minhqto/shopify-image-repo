@@ -1,16 +1,18 @@
 const express = require("express");
 const {
-  initialize,
+  initializeAWS,
   uploadImages,
   getImages,
   getImage,
   deleteImage,
 } = require("./data-service");
+
+const { createUser } = require("./data-service-auth");
+const { initializeMongo } = require("./data-service-auth");
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
 const cors = require("cors");
 const multer = require("multer");
-
 const upload = multer();
 app.use(cors());
 
@@ -57,6 +59,16 @@ app.post(
   }
 );
 
+app.post("/api/signup", upload.none(), (req, res) => {
+  createUser(req.body)
+    .then((username) => {
+      res.status(200).send(username);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
 app.put("/api/image/:id", (req, res) => {});
 
 app.delete("/api/image/:id", (req, res) => {
@@ -69,9 +81,18 @@ app.delete("/api/image/:id", (req, res) => {
     });
 });
 
+app.delete("/api/images", (req, res) => {});
+
 app.listen(HTTP_PORT, () => {
   console.log(`App listening on ${HTTP_PORT}`);
-  initialize()
+  initializeMongo()
+    .then((msg) => {
+      console.log(msg);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  initializeAWS()
     .then((res) => {
       console.log(`S3 instance created. You're currently using bucket ${res}`);
       bucketName = res;

@@ -30,6 +30,7 @@ const AddImages = () => {
     imagesToUpload.forEach((img) => {
       formData.append("imageFile", img);
     });
+
     axios
       .post(`${config.apiUrl}/uploadImage`, formData, {
         headers: {
@@ -62,7 +63,7 @@ const AddImages = () => {
     let imgArr = Array.from(event.target.files);
     if (imgArr.length > 50) {
       alert("You can only upload a max of 50 images!");
-      history.push("/addImages");
+      document.getElementById("imageFile").value = "";
     } else {
       setImagesToUpload(imgArr);
     }

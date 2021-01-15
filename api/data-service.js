@@ -63,7 +63,7 @@ const uploadToS3 = (s3params) => {
 };
 
 // exposed functions
-module.exports.initialize = function () {
+module.exports.initializeAWS = function () {
   return new Promise((resolve, reject) => {
     s3 = new AWS.S3({
       apiVersion: "2006-03-01",
@@ -77,22 +77,6 @@ module.exports.initialize = function () {
       }
     });
   });
-
-  // try {
-  //   s3 = new AWS.S3({
-  //     apiVersion: "2006-03-01",
-  //   });
-  //   s3.listBuckets(function (err, data) {
-  //     if (err) {
-  //       console.log(err);
-  //     } else {
-  //       bucketName = data.Buckets[0].Name;
-  //     }
-  //     return bucketName;
-  //   });
-  // } catch (err) {
-  //   console.log(`Could not initialize ${err}`);
-  // }
 };
 
 module.exports.uploadImages = (images) => {
