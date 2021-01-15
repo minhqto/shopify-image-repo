@@ -44,7 +44,6 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/api/images", (req, res) => {
-  console.log(process.env.JWTSECRET);
   getImages()
     .then((response) => {
       res.status(200).send(response);
@@ -91,6 +90,7 @@ app.post("/api/signup", upload.none(), (req, res) => {
 });
 
 app.post("/api/login", upload.none(), (req, res) => {
+  console.log(process.env.JWTSECRET);
   authenticateUser(req.body)
     .then((response) => {
       let payload = {
