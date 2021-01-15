@@ -40,9 +40,12 @@ export default function Login() {
   const history = useHistory();
 
   const [account, setAccount] = useState({
-    email: "",
+    username: "",
     password: "",
   });
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const handleInputChange = (event) => {
     setAccount({
       ...account,
@@ -58,8 +61,15 @@ export default function Login() {
     let formData = new FormData();
     formData.append("username", account.username);
     formData.append("password", account.password);
-
-    axios.post(`${config.apiUrl}/login`, formData);
+    axios
+      .post(`${config.apiUrl}/login`, formData)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        setErrorMessage(err.response.data.message);
+        setIsError(true);
+      });
   };
 
   return (
@@ -72,16 +82,16 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form}>
           <TextField
             variant="outlined"
             margin="normal"
             required={true}
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
             autoFocus
             onChange={(event) => {
               handleInputChange(event);
@@ -129,6 +139,9 @@ export default function Login() {
             </Grid>
           </Grid>
         </form>
+        <Alert color="danger" hidden={!isError}>
+          {errorMessage}
+        </Alert>
       </div>
     </Container>
   );
