@@ -59,7 +59,7 @@ export default function Login() {
     formData.append("username", account.username);
     formData.append("password", account.password);
 
-    axios.post(`${config.apiUrl}`, formData);
+    axios.post(`${config.apiUrl}/login`, formData);
   };
 
   return (
