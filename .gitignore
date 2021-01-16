@@ -12,6 +12,7 @@
 # production
 /build
 /api/AWS_PROFILE.env
+/api/.env.development
 
 # misc
 .DS_Store
