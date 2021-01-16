@@ -99,7 +99,6 @@ app.post("/api/login", upload.none(), (req, res) => {
       res.cookie("token", token, {
         httpOnly: true,
         secure: true,
-        sameSite: None,
       });
       res.status(200).json({ message: response, token: token });
     })
