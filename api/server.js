@@ -96,7 +96,7 @@ app.post("/api/login", upload.none(), (req, res) => {
         username: response.username,
       };
       let token = jwt.sign(payload, jwtSecret, { expiresIn: 3600 });
-      res.cookie("token", token, { httpOnly: true, secure: true });
+      res.cookie("token", token, { httpOnly: true, secure: req.secure || req.headers['x-forwarded-proto'] === 'https' });
       res.status(200).json({ message: response, token: token });
     })
     .catch((err) => {
