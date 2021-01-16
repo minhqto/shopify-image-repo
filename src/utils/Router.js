@@ -6,7 +6,7 @@ import Image from "../components/Image";
 import Signup from "../components/Signup";
 import Login from "../components/Login";
 
-const Router = () => {
+export const PrivateRouter = () => {
   return (
     <Switch>
       <Route exact path="/">
@@ -15,10 +15,18 @@ const Router = () => {
       <Route exact path="/images" render={() => <Images />}></Route>
       <Route exact path="/addImages" render={() => <AddImages />}></Route>
       <Route exact path="/image/:id" render={() => <Image />}></Route>
-      <Route exact path="/signup" render={() => <Signup />}></Route>
-      <Route exact path="/login" render={() => <Login />}></Route>
     </Switch>
   );
 };
 
-export default Router;
+export const PublicRouter = () => {
+  return (
+    <Switch>
+      <Route exact path="/signup" render={() => <Signup />}></Route>
+      <Route exact path="/login" render={() => <Login />}></Route>
+      <Route exact path="/*">
+        <Redirect to="/login" />
+      </Route>
+    </Switch>
+  );
+};

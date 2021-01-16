@@ -13,7 +13,7 @@ import axios from "axios";
 import config from "../config/config";
 import FormData from "form-data";
 import { Alert } from "reactstrap";
-import { UserContext } from "../context";
+import { AppContext } from "../context";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -45,7 +45,7 @@ export default function Login() {
   });
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const { setCurrentAccount } = useContext(UserContext);
+  const { setCurrentAccount } = useContext(AppContext);
 
   const handleInputChange = (event) => {
     setAccount({
@@ -67,7 +67,7 @@ export default function Login() {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response);
+        setCurrentAccount(response.data.account);
         history.push("/images");
       })
       .catch((err) => {
