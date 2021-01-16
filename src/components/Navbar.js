@@ -28,6 +28,9 @@ const ImageRepoNavbar = (props) => {
       .delete(`${config.apiUrl}/logout`, { withCredentials: true })
       .then((response) => {
         useHistory.push("/login");
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
   return (
