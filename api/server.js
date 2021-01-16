@@ -98,9 +98,9 @@ app.post("/api/login", upload.none(), (req, res) => {
       };
       let token = jwt.sign(payload, jwtSecret, { expiresIn: 3600 });
       res.cookie("token", token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "None",
+        httpOnly: false,
+        secure: false,
+        sameSite: "Lax",
       });
       res.status(200).json({ account: response, token: token });
     })
