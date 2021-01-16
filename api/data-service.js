@@ -1,6 +1,7 @@
 const AWS = require("aws-sdk");
 const path = require("path");
 const { Readable } = require("stream");
+AWS.config.update({ region: process.env.REGION });
 
 let s3;
 let bucketName;
