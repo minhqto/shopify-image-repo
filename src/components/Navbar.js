@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   Collapse,
   Navbar,
@@ -11,13 +11,11 @@ import {
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import config from "../config/config";
-import { AppContext } from "../context";
 
 const ImageRepoNavbar = () => {
   const history = useHistory();
   const [selected, setSelected] = useState(false);
   const toggle = () => setSelected(!selected);
-  const { setCurrentAccount } = useContext(AppContext);
 
   const handleClick = (event) => {
     event.preventDefault();
@@ -29,7 +27,7 @@ const ImageRepoNavbar = () => {
     axios
       .delete(`${config.apiUrl}/logout`, { withCredentials: true })
       .then((response) => {
-        setCurrentAccount(null);
+        localStorage.removeItem("account");
         history.push("/login");
       })
       .catch((err) => {

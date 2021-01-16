@@ -9,12 +9,15 @@ import Login from "../components/Login";
 export const PrivateRouter = () => {
   return (
     <Switch>
-      <Route exact path="/">
+      {/* <Route path={["/", "/login", "/signup"]}>
         <Redirect to="/images" />
-      </Route>
+      </Route> */}
       <Route exact path="/images" render={() => <Images />}></Route>
       <Route exact path="/addImages" render={() => <AddImages />}></Route>
       <Route exact path="/image/:id" render={() => <Image />}></Route>
+      <Route path="*">
+        <div>FourOhFour</div>
+      </Route>
     </Switch>
   );
 };
