@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -13,6 +13,7 @@ import axios from "axios";
 import config from "../config/config";
 import FormData from "form-data";
 import { Alert } from "reactstrap";
+import { UserContext } from "../context";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -44,6 +45,7 @@ export default function Login() {
   });
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const { setCurrentAccount } = useContext(UserContext);
 
   const handleInputChange = (event) => {
     setAccount({
@@ -65,6 +67,7 @@ export default function Login() {
         withCredentials: true,
       })
       .then((response) => {
+        console.log(response);
         history.push("/images");
       })
       .catch((err) => {
