@@ -9,6 +9,8 @@ import {
   NavLink,
 } from "reactstrap";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+import config from "../config/config";
 
 const ImageRepoNavbar = (props) => {
   const history = useHistory();
@@ -18,6 +20,15 @@ const ImageRepoNavbar = (props) => {
   const handleClick = (event) => {
     event.preventDefault();
     history.push(`/${event.target.name}`);
+  };
+
+  const handleLogout = (event) => {
+    event.preventDefault();
+    axios
+      .delete(`${config.apiUrl}/logout`, { withCredentials: true })
+      .then((response) => {
+        useHistory.push("/login");
+      });
   };
   return (
     <div>
@@ -63,7 +74,7 @@ const ImageRepoNavbar = (props) => {
             className="ml-auto"
             name="login"
             onClick={(event) => {
-              handleClick(event);
+              handleLogout(event);
             }}
           >
             Log out
