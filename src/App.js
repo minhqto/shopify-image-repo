@@ -1,11 +1,15 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { PublicRouter, PrivateRouter } from "./utils/Router";
-
+import { AppProvider } from "../src/context";
+import { useState } from "react";
 function App() {
+  const [currentAccount, setCurrentAccount] = useState(
+    localStorage.getItem("account")
+  );
   return (
-    <div>
-      {localStorage.getItem("account") ? (
+    <AppProvider value={{ setCurrentAccount }}>
+      {currentAccount ? (
         <div>
           <PrivateRouter />
         </div>
@@ -14,7 +18,7 @@ function App() {
           <PublicRouter />
         </div>
       )}
-    </div>
+    </AppProvider>
   );
 }
 
