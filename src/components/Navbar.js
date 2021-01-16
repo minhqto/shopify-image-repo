@@ -27,7 +27,7 @@ const ImageRepoNavbar = (props) => {
     axios
       .delete(`${config.apiUrl}/logout`, { withCredentials: true })
       .then((response) => {
-        useHistory.push("/login");
+        history.push("/login");
       })
       .catch((err) => {
         console.log(err);

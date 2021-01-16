@@ -125,7 +125,11 @@ app.delete(
 
 app.delete("/api/logout", (req, res) => {
   if (req.cookies) {
-    res.clearCookie("token");
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
     res.status(200).json({ message: "Logout successful" });
   } else {
     res.status(500).json({ message: "error logging out" });
