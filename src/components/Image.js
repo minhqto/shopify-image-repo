@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from "react";
 import { Container, Row, Col, Media, Spinner } from "reactstrap";
+import ImageRepoNavbar from "./Navbar";
 import { useParams } from "react-router";
 import axios from "axios";
 import config from "../config/config";
@@ -23,6 +24,7 @@ const Image = () => {
 
   return (
     <Container>
+      <ImageRepoNavbar />
       <Row>
         <Col xs="3">
           <div styles="width:800; height:800;">
