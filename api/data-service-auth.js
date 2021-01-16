@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-const dotenv = require("dotenv");
 const { userSchema } = require("./models/User");
-dotenv.config({ path: __dirname + "/AWS_PROFILE.env" });
 
 const connectionString = process.env.MONGO_DB_CONNECTION_STRING;
 let User;

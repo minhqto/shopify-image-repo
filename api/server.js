@@ -6,7 +6,7 @@ const multer = require("multer");
 const upload = multer();
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
-
+dotenv.config({ path: __dirname + "/.env.development" });
 const {
   initializeAWS,
   uploadImages,
@@ -14,13 +14,14 @@ const {
   getImage,
   deleteImage,
 } = require("./data-service");
+
 const { createUser, authenticateUser } = require("./data-service-auth");
 const { initializeMongo } = require("./data-service-auth");
 
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
 const jwtSecret = process.env.JWTSECRET;
-dotenv.config({ path: __dirname + "/AWS_PROFILE.env" });
+
 app.use(cookieParser());
 app.use(cors({ credentials: true, origin: true }));
 

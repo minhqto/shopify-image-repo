@@ -1,10 +1,6 @@
 const AWS = require("aws-sdk");
-const dotenv = require("dotenv");
 const path = require("path");
 const { Readable } = require("stream");
-
-dotenv.config({ path: __dirname + "/AWS_PROFILE.env" });
-AWS.config.update({ region: process.env.REGION });
 
 let s3;
 let bucketName;
