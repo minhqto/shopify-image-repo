@@ -102,7 +102,7 @@ app.post("/api/login", upload.none(), (req, res) => {
         secure: true,
         sameSite: "None",
       });
-      res.status(200).json({ message: response, token: token });
+      res.status(200).json({ account: response, token: token });
     })
     .catch((err) => {
       console.log(err);
