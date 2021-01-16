@@ -1,5 +1,5 @@
 const config = {
-  apiUrl: "https://dashboard.heroku.com/apps/shopify-image-repo-api/api",
+  apiUrl: "https://shopify-image-repo-api.herokuapp.com/api",
 };
 
 export default config;
