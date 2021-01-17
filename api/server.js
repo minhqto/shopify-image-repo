@@ -69,8 +69,10 @@ app.post(
     if (req.files) {
       uploadImages(req.files)
         .then((response) => {
+          console.log(response);
           getImages()
             .then((images) => {
+              console.log(images);
               res.status(200).send(images);
             })
             .catch((err) => {
