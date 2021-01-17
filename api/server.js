@@ -69,7 +69,13 @@ app.post(
     if (req.files) {
       uploadImages(req.files)
         .then((response) => {
-          res.status(200).send(response);
+          getImages()
+            .then((images) => {
+              res.status(200).send(images);
+            })
+            .catch((err) => {
+              res.status(500).send(err);
+            });
         })
         .catch((err) => {
           res.status(500).json(err);

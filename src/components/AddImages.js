@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Container,
   Col,
@@ -16,12 +16,14 @@ import FormData from "form-data";
 import config from "../config/config";
 import { useHistory } from "react-router-dom";
 import ImageRepoNavbar from "./Navbar";
+import { AppContext } from "../context";
 
 const AddImages = () => {
   const [imagesToUpload, setImagesToUpload] = useState([]);
   const [errorMsg, setErrorMsg] = useState({});
   const [hideStatusBar, setHideStatusBar] = useState(true);
   const [percentCompleted, setPercentCompleted] = useState(0);
+  const { allUploadedImages, setAllUploadedImages } = useContext(AppContext);
   const history = useHistory();
 
   const handleSubmit = (event) => {
@@ -58,6 +60,10 @@ const AddImages = () => {
         }
       )
       .then((response) => {
+        console.log(allUploadedImages);
+        console.log(response.data);
+        let newImages = [...allUploadedImages, response.data];
+        setAllUploadedImages(newImages);
         history.push("/images");
       })
       .catch((err) => {

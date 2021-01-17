@@ -7,8 +7,18 @@ function App() {
   const [currentAccount, setCurrentAccount] = useState(
     localStorage.getItem("account")
   );
+  const [imagesUploaded, setImagesUploaded] = useState(false);
+  const [allUploadedImages, setAllUploadedImages] = useState([]);
   return (
-    <AppProvider value={{ setCurrentAccount }}>
+    <AppProvider
+      value={{
+        setCurrentAccount,
+        imagesUploaded,
+        setImagesUploaded,
+        allUploadedImages,
+        setAllUploadedImages,
+      }}
+    >
       {currentAccount ? (
         <div>
           <PrivateRouter />

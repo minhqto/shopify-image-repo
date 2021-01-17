@@ -13,7 +13,7 @@ import axios from "axios";
 import config from "../config/config";
 import FormData from "form-data";
 import { Alert } from "reactstrap";
-import {AppContext} from "../context"; 
+import { AppContext } from "../context";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles();
   const history = useHistory();
-  const {setCurrentAccount} = useContext(AppContext);
+  const { setCurrentAccount } = useContext(AppContext);
   const [account, setAccount] = useState({
     username: "",
     password: "",
@@ -67,7 +67,7 @@ export default function Login() {
       })
       .then((response) => {
         localStorage.setItem("account", response.data.account);
-        setCurrentAccount(response.data.account)
+        setCurrentAccount(response.data.account);
         history.push("/images");
       })
       .catch((err) => {
