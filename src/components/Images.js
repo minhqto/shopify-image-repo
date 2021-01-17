@@ -16,6 +16,7 @@ import ImageRepoNavbar from "./Navbar";
 
 const Images = () => {
   const [images, setImages] = useState([]);
+  const [reload, setReload] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
