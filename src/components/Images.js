@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import {
   Container,
   Row,
@@ -26,7 +26,7 @@ const Images = () => {
           let allImages = [];
           let imgID = 1;
           result.data.forEach((image) => {
-            let tempImg = { id: imgID, imgUrl: image.url, imgName: image.name };
+            let tempImg = { id: imgID, url: image.url, name: image.name };
             imgID++;
             allImages.push(tempImg);
           });
@@ -34,7 +34,7 @@ const Images = () => {
         }
       );
     }
-  }, []);
+  });
 
   const handleCardClick = (imgName) => {
     history.push(`/image/${imgName}`);
@@ -45,7 +45,7 @@ const Images = () => {
       .delete(`${config.apiUrl}/image/${imgName}`, { withCredentials: true })
       .then((response) => {
         let updatedImages = allUploadedImages.filter(
-          (img) => img.imgName !== imgName
+          (img) => img.name !== imgName
         );
         setAllUploadedImages(updatedImages);
       })
@@ -70,15 +70,15 @@ const Images = () => {
                 <CardImg
                   top
                   width="100%"
-                  src={img.imgUrl}
-                  onClick={() => handleCardClick(img.imgName)}
+                  src={img.url}
+                  onClick={() => handleCardClick(img.name)}
                 />
-                <CardText>{img.imgName}</CardText>
+                <CardText>{img.name}</CardText>
 
                 <Button
                   outline
                   onClick={() => {
-                    handleDelete(img.imgName);
+                    handleDelete(img.name);
                   }}
                 >
                   Delete

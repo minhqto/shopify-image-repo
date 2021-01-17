@@ -23,7 +23,7 @@ const AddImages = () => {
   const [errorMsg, setErrorMsg] = useState({});
   const [hideStatusBar, setHideStatusBar] = useState(true);
   const [percentCompleted, setPercentCompleted] = useState(0);
-  const { allUploadedImages, setAllUploadedImages } = useContext(AppContext);
+  const { setAllUploadedImages } = useContext(AppContext);
   const history = useHistory();
 
   const handleSubmit = (event) => {
@@ -60,10 +60,7 @@ const AddImages = () => {
         }
       )
       .then((response) => {
-        console.log(allUploadedImages);
-        console.log(response.data);
-        let newImages = [...allUploadedImages, response.data];
-        setAllUploadedImages(newImages);
+        setAllUploadedImages(response.data); //set the global state to the newly set array
         history.push("/images");
       })
       .catch((err) => {

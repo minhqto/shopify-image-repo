@@ -68,19 +68,18 @@ app.post(
   (req, res, next) => {
     if (req.files) {
       uploadImages(req.files)
-        .then((response) => {
-          console.log(response);
+        .then((response) => response)
+        .catch((err) => {
+          res.status(500).json(err);
+        })
+        .finally(() => {
           getImages()
             .then((images) => {
-              console.log(images);
-              res.status(200).send(images);
+              res.status(200).json(images);
             })
             .catch((err) => {
               res.status(500).send(err);
             });
-        })
-        .catch((err) => {
-          res.status(500).json(err);
         });
     }
   }
@@ -97,7 +96,6 @@ app.post("/api/signup", upload.none(), (req, res) => {
 });
 
 app.post("/api/login", upload.none(), (req, res) => {
-  console.log(process.env.JWTSECRET);
   authenticateUser(req.body)
     .then((response) => {
       let payload = {
@@ -110,6 +108,8 @@ app.post("/api/login", upload.none(), (req, res) => {
         secure: true,
         sameSite: "None",
       });
+      // Prod setting
+
       res.status(200).json({ account: response, token: token });
     })
     .catch((err) => {
