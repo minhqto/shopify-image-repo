@@ -35,30 +35,26 @@ const AddImages = () => {
     });
 
     axios
-      .post(
-        `${config.apiUrl}/uploadImage`,
-        formData,
-        { withCredentials: true },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          }, //credit goes to https://github.com/chancet1982/vue-loadingbar/blob/master/src/components/LoadingBar.vue
-          onUploadProgress: (progressEvent) => {
-            const totalLength = progressEvent.lengthComputable
-              ? progressEvent.total
-              : progressEvent.target.getResponseHeader("content-length") ||
-                progressEvent.target.getResponseHeader(
-                  "x-decompressed-content-length"
-                );
-            if (totalLength !== null) {
-              let completed = Math.round(
-                (progressEvent.loaded * 100) / totalLength
+      .post(`${config.apiUrl}/uploadImage`, formData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        }, //credit goes to https://github.com/chancet1982/vue-loadingbar/blob/master/src/components/LoadingBar.vue
+        onUploadProgress: (progressEvent) => {
+          const totalLength = progressEvent.lengthComputable
+            ? progressEvent.total
+            : progressEvent.target.getResponseHeader("content-length") ||
+              progressEvent.target.getResponseHeader(
+                "x-decompressed-content-length"
               );
-              setPercentCompleted(completed);
-            }
-          },
-        }
-      )
+          if (totalLength !== null) {
+            let completed = Math.round(
+              (progressEvent.loaded * 100) / totalLength
+            );
+            setPercentCompleted(completed);
+          }
+        },
+      })
       .then((response) => {
         setAllUploadedImages(response.data); //set the global state to the newly set array
         history.push("/images");
