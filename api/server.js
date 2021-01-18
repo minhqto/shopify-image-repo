@@ -106,7 +106,7 @@ app.post("/api/login", upload.none(), (req, res) => {
       res.cookie("token", token, {
         httpOnly: true,
         secure: true,
-        sameSite: "None",
+        sameSite: "Strict",
       });
       // Prod setting
 
@@ -137,7 +137,7 @@ app.delete("/api/logout", (req, res) => {
     res.clearCookie("token", {
       httpOnly: true,
       secure: true,
-      sameSite: "None",
+      sameSite: "Strict",
     });
     res.status(200).json({ message: "Logout successful" });
   } else {
