@@ -85,6 +85,7 @@ const AddImages = () => {
           <Col sm={10}>
             <Input
               type="file"
+              accept=".jpeg,.png,.gif"
               name="imageFile"
               id="imageFile"
               onChange={(event) => handleChange(event)}
