@@ -10,18 +10,28 @@ This project was a part of Shopify's Summer 2021 Backend Developer Intern techni
 
 **Backend**
 
-- Express
+- The API is served by an Express server. The following routes are supported:
+  - Authentication
+    - POST /api/login
+    - POST /api/signup
+    - DELETE /api/logout
+  - Images
+    - GET /api/images
+    - GET /api/image/:id
+    - POST /api/uploadImage
+    - DELETE /api/image/:id
 - Node.js
-- AWS S3 for image storage
+  - The workhorse for connecting to AWS S3
+- AWS S3 for image storage, just because I wanted to try it out
 
 **Security**
 
-- API is secured with JWT stored in cookies
+- API is secured with JWT stored in cookies.
 - User credentials stored in MongoDB, with encrypted passwords
 
 **Deployment**
 
-- Frontend is currently deployed to Vercel for easy, automatic redeployment on commits to the master branch
+- Frontend is currently deployed to Vercel for easy, automatic re-deployment on commits to the master branch
 - Backend is currently deployed to Heroku
 
 ## Future upgrades/fixes
