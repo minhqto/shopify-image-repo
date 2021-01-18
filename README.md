@@ -5,16 +5,19 @@ This project was a part of Shopify's Summer 2021 Backend Developer Intern techni
 ## Tech stack
 
 **Frontend**
-React, using reactstrap components to save time on CSS
+
+- React, using reactstrap components to save time on CSS
 
 **Backend**
-Express
-Node.js
-AWS S3 for image storage
+
+- Express
+- Node.js
+- AWS S3 for image storage
 
 **Security**
-API is secured with JWT stored in cookies
-User credentials stored in MongoDB, with encrypted passwords
+
+- API is secured with JWT stored in cookies
+- User credentials stored in MongoDB, with encrypted passwords
 
 **Deployment**
 Frontend is currently deployed to Vercel for easy, automatic redeployment on commits to the master branch
