@@ -20,8 +20,9 @@ This project was a part of Shopify's Summer 2021 Backend Developer Intern techni
 - User credentials stored in MongoDB, with encrypted passwords
 
 **Deployment**
-Frontend is currently deployed to Vercel for easy, automatic redeployment on commits to the master branch
-Backend is currently deployed to Heroku
+
+- Frontend is currently deployed to Vercel for easy, automatic redeployment on commits to the master branch
+- Backend is currently deployed to Heroku
 
 ## Future upgrades/fixes
 
