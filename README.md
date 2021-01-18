@@ -2,6 +2,15 @@
 
 This project was a part of Shopify's Summer 2021 Backend Developer Intern technical challenge.
 
+## Usage
+
+1. Go to https://imagify2021.vercel.app/login
+2. Sign up if you don't already have an account, then log in once redirected
+3. Check out all the photos.
+4. Upload your photos!
+5. Check them out, and click on the photo to view a larger size
+6. Logout once done!
+
 ## Tech stack
 
 **Frontend**
