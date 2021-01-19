@@ -132,7 +132,7 @@ app.delete(
   }
 );
 
-app.delete("/api/logout", (req, res) => {
+app.delete("/api/logout", upload.none(), (req, res) => {
   if (req.cookies) {
     res.clearCookie("token", {
       httpOnly: true,
