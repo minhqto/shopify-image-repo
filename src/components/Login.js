@@ -12,7 +12,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import config from "../config/config";
 import FormData from "form-data";
-import { Alert } from "reactstrap";
+import { Alert, Spinner } from "reactstrap";
 import { AppContext } from "../context";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles();
   const history = useHistory();
-  const { setCurrentAccount } = useContext(AppContext);
+  const { setLoginTime, setIsLoggedIn, isLoggedIn } = useContext(AppContext);
   const [account, setAccount] = useState({
     username: "",
     password: "",
@@ -58,6 +58,7 @@ export default function Login() {
 
   const handleSignInClick = (event) => {
     event.preventDefault();
+    setIsLoggedIn(true);
     let formData = new FormData();
     formData.append("username", account.username);
     formData.append("password", account.password);
@@ -66,12 +67,13 @@ export default function Login() {
         withCredentials: true,
       })
       .then((response) => {
-        localStorage.setItem("account", response.data.account);
-        setCurrentAccount(response.data.account);
+        setLoginTime(new Date().getTime());
+        setIsLoggedIn(true);
         history.push("/images");
       })
       .catch((err) => {
         console.log(err.message);
+        setIsLoggedIn(false);
         setErrorMessage("Incorrect user credentials!");
         setIsError(true);
       });
@@ -146,6 +148,7 @@ export default function Login() {
         <Alert color="danger" hidden={!isError}>
           {errorMessage}
         </Alert>
+        <Spinner hidden={!isLoggedIn}></Spinner>
       </div>
     </Container>
   );

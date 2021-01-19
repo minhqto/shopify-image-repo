@@ -17,7 +17,7 @@ const ImageRepoNavbar = () => {
   const history = useHistory();
   const [selected, setSelected] = useState(false);
   const toggle = () => setSelected(!selected);
-  const { setCurrentAccount } = useContext(AppContext);
+  const { setIsLoggedIn } = useContext(AppContext);
 
   const handleClick = (event) => {
     event.preventDefault();
@@ -29,8 +29,7 @@ const ImageRepoNavbar = () => {
     axios
       .delete(`${config.apiUrl}/logout`, { withCredentials: true })
       .then((response) => {
-        localStorage.removeItem("account");
-        setCurrentAccount(null);
+        setIsLoggedIn(false);
         history.push("/login");
       })
       .catch((err) => {
@@ -39,7 +38,7 @@ const ImageRepoNavbar = () => {
   };
   return (
     <div>
-      <Navbar color="light" light expand="md">
+      <Navbar color="light" light expand="sm">
         <NavbarBrand
           style={{ cursor: "pointer" }}
           name="images"

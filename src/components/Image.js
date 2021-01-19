@@ -20,7 +20,7 @@ const Image = () => {
           setImageUrl(response.data);
         }
       });
-  });
+  }, [id]);
 
   return (
     <Container>

@@ -4,22 +4,24 @@ import { PublicRouter, PrivateRouter } from "./utils/Router";
 import { AppProvider } from "../src/context";
 import { useState } from "react";
 function App() {
-  const [currentAccount, setCurrentAccount] = useState(
-    localStorage.getItem("account")
-  );
+  const [loginTime, setLoginTime] = useState(new Date().getTime());
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [imagesUploaded, setImagesUploaded] = useState(false);
   const [allUploadedImages, setAllUploadedImages] = useState([]);
+
   return (
     <AppProvider
       value={{
-        setCurrentAccount,
         imagesUploaded,
         setImagesUploaded,
         allUploadedImages,
         setAllUploadedImages,
+        isLoggedIn,
+        setIsLoggedIn,
+        setLoginTime,
       }}
     >
-      {currentAccount ? (
+      {new Date().getTime() - loginTime < 3600 && isLoggedIn ? (
         <div>
           <PrivateRouter />
         </div>

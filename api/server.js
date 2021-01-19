@@ -106,7 +106,7 @@ app.post("/api/login", upload.none(), (req, res) => {
       res.cookie("token", token, {
         httpOnly: true,
         secure: true,
-        sameSite: "None",
+        sameSite: "Lax",
       });
       // Prod setting
 

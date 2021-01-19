@@ -23,6 +23,7 @@ const Images = () => {
     if (allUploadedImages.length === 0) {
       axios(`${config.apiUrl}/images`, { withCredentials: true }).then(
         (result) => {
+          console.log("images reloaded!");
           let allImages = [];
           let imgID = 1;
           result.data.forEach((image) => {
@@ -34,7 +35,7 @@ const Images = () => {
         }
       );
     }
-  });
+  }, []);
 
   const handleCardClick = (imgName) => {
     history.push(`/image/${imgName}`);
