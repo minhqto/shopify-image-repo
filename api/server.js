@@ -118,19 +118,15 @@ app.post("/api/login", upload.none(), (req, res) => {
     });
 });
 
-app.delete(
-  "/api/image/:id",
-
-  (req, res) => {
-    deleteImage(req.params.id)
-      .then((data) => {
-        res.status(200).send(data);
-      })
-      .catch((err) => {
-        res.status(500).send(err);
-      });
-  }
-);
+app.delete("/api/image/:id", (req, res) => {
+  deleteImage(req.params.id)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
 
 app.delete("/api/logout", upload.none(), (req, res) => {
   if (req.cookies) {
