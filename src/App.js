@@ -21,7 +21,7 @@ function App() {
         setLoginTime,
       }}
     >
-      {new Date().getTime() - loginTime < 3600 && isLoggedIn ? (
+      {isLoggedIn ? (
         <div>
           <PrivateRouter />
         </div>

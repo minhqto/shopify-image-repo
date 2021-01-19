@@ -58,7 +58,7 @@ export default function Login() {
 
   const handleSignInClick = (event) => {
     event.preventDefault();
-    setIsLoggedIn(true);
+
     let formData = new FormData();
     formData.append("username", account.username);
     formData.append("password", account.password);
