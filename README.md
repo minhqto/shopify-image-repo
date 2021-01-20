@@ -45,7 +45,7 @@ This project was a part of Shopify's Summer 2021 Backend Developer Intern techni
 
 ## Future upgrades/fixes
 
-> Currently, the app doesn't work properly if the user has blocked third-party cookies, as the domains of the client and server are different. This is priority to fix
+> Currently, the app doesn't work properly if the user has blocked third-party cookies, as the domains of the client and server are different. This is priority to fix. Turns out I need to put my API and my client on the same domain to avoid being blocked by browers that block third party APIs
 
 > Fix the hamburger menu response when the page's width is adjusted
 >

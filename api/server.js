@@ -15,13 +15,17 @@ const {
   deleteImage,
 } = require("./data-service");
 
-const { createUser, authenticateUser } = require("./data-service-auth");
+const {
+  createUser,
+  authenticateUser,
+  addImagesToAccount,
+  removeImagesFromAccount,
+} = require("./data-service-auth");
 const { initializeMongo } = require("./data-service-auth");
 
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
-const jwtSecret = process.env.JWTSECRET;
-
+let jwtSecret = process.env.JWTSECRET;
 app.use(cookieParser());
 app.use(cors({ credentials: true, origin: true }));
 
@@ -105,7 +109,7 @@ app.post("/api/login", upload.none(), (req, res) => {
       let token = jwt.sign(payload, jwtSecret, { expiresIn: 3600 });
       res.cookie("token", token, {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === "production" ? true : false,
         sameSite: "None",
       });
       // Prod setting
@@ -132,7 +136,7 @@ app.delete("/api/logout", upload.none(), (req, res) => {
   if (req.cookies) {
     res.clearCookie("token", {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production" ? true : false,
       sameSite: "None",
     });
     res.status(200).json({ message: "Logout successful" });

@@ -4,7 +4,6 @@ import { PublicRouter, PrivateRouter } from "./utils/Router";
 import { AppProvider } from "../src/context";
 import { useState } from "react";
 function App() {
-  const [loginTime, setLoginTime] = useState(new Date().getTime());
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [imagesUploaded, setImagesUploaded] = useState(false);
   const [allUploadedImages, setAllUploadedImages] = useState([]);
@@ -18,10 +17,10 @@ function App() {
         setAllUploadedImages,
         isLoggedIn,
         setIsLoggedIn,
-        setLoginTime,
       }}
     >
-      {isLoggedIn ? (
+      {localStorage.getItem("login") ? (
+
         <div>
           <PrivateRouter />
         </div>

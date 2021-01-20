@@ -1,5 +1,8 @@
 const config = {
-  apiUrl: "https://shopify-image-repo-api.herokuapp.com/api",
+  apiUrl:
+    process.env.NODE_ENV === "production"
+      ? "https://shopify-image-repo-api.herokuapp.com/api"
+      : "http://localhost:8080/api",
 };
 
 export default config;

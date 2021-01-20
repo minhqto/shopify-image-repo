@@ -38,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles();
   const history = useHistory();
-  const { setLoginTime, setIsLoggedIn, isLoggedIn } = useContext(AppContext);
+  const { setIsLoggedIn } = useContext(AppContext);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [account, setAccount] = useState({
     username: "",
     password: "",
@@ -59,6 +60,9 @@ export default function Login() {
   const handleSignInClick = (event) => {
     event.preventDefault();
 
+    setIsLoggingIn(true);
+    setIsError(false);
+
     let formData = new FormData();
     formData.append("username", account.username);
     formData.append("password", account.password);
@@ -67,13 +71,12 @@ export default function Login() {
         withCredentials: true,
       })
       .then((response) => {
-        setLoginTime(new Date().getTime());
+        localStorage.setItem("login", new Date().getTime());
         setIsLoggedIn(true);
         history.push("/images");
       })
       .catch((err) => {
-        console.log(err.message);
-        setIsLoggedIn(false);
+        setIsLoggingIn(false);
         setErrorMessage("Incorrect user credentials!");
         setIsError(true);
       });
