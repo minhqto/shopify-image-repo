@@ -74,3 +74,6 @@ module.exports.authenticateUser = (userData) => {
       });
   });
 };
+
+module.exports.addImagesToAccount = (userData) => {};
+module.exports.removeImagesFromAccount = (userData) => {};

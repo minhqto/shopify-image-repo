@@ -8,6 +8,13 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [imagesUploaded, setImagesUploaded] = useState(false);
   const [allUploadedImages, setAllUploadedImages] = useState([]);
+  const [username, setUsername] = useState("");
+
+  const calcTime = () => {
+    let currTime = new Date().getTime();
+    console.log(currTime - loginTime < 3600);
+    return currTime - loginTime < 3600;
+  };
 
   return (
     <AppProvider
@@ -19,9 +26,11 @@ function App() {
         isLoggedIn,
         setIsLoggedIn,
         setLoginTime,
+        username,
+        setUsername,
       }}
     >
-      {new Date().getTime() - loginTime < 3600 && isLoggedIn ? (
+      {isLoggedIn ? (
         <div>
           <PrivateRouter />
         </div>

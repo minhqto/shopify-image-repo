@@ -8,4 +8,10 @@ module.exports.userSchema = new Schema({
   },
   password: String,
   email: String,
+  imagesUploaded: [
+    {
+      imgUrl: String,
+      imageName: String,
+    },
+  ],
 });

@@ -15,7 +15,12 @@ const {
   deleteImage,
 } = require("./data-service");
 
-const { createUser, authenticateUser } = require("./data-service-auth");
+const {
+  createUser,
+  authenticateUser,
+  addImagesToAccount,
+  removeImagesFromAccount,
+} = require("./data-service-auth");
 const { initializeMongo } = require("./data-service-auth");
 
 const app = express();
@@ -105,8 +110,8 @@ app.post("/api/login", upload.none(), (req, res) => {
       let token = jwt.sign(payload, jwtSecret, { expiresIn: 3600 });
       res.cookie("token", token, {
         httpOnly: true,
-        secure: true,
-        sameSite: "Lax",
+        // secure: true,
+        // sameSite: "None",
       });
       // Prod setting
 
@@ -132,12 +137,12 @@ app.delete(
   }
 );
 
-app.delete("/api/logout", (req, res) => {
+app.delete("/api/logout", upload.none(), (req, res) => {
   if (req.cookies) {
     res.clearCookie("token", {
       httpOnly: true,
-      secure: true,
-      sameSite: "None",
+      // secure: true,
+      // sameSite: "None",
     });
     res.status(200).json({ message: "Logout successful" });
   } else {
