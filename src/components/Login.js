@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles();
   const history = useHistory();
-  const { setLoginTime, setIsLoggedIn, setUsername } = useContext(AppContext);
+  const { setIsLoggedIn } = useContext(AppContext);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [account, setAccount] = useState({
     username: "",
@@ -69,9 +69,8 @@ export default function Login() {
         withCredentials: true,
       })
       .then((response) => {
+        localStorage.setItem("login", new Date().getTime());
         setIsLoggedIn(true);
-        setUsername(response.data.account.username);
-        setLoginTime(new Date().getTime());
         history.push("/images");
       })
       .catch((err) => {

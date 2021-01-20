@@ -25,6 +25,7 @@ const ImageRepoNavbar = () => {
   };
 
   const handleLogout = (event) => {
+    localStorage.removeItem("login");
     event.preventDefault();
     axios
       .delete(`${config.apiUrl}/logout`, { withCredentials: true })

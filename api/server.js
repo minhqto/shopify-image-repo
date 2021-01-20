@@ -110,7 +110,7 @@ app.post("/api/login", upload.none(), (req, res) => {
       res.cookie("token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production" ? true : false,
-        sameSite: "Strict",
+        sameSite: "None",
       });
       // Prod setting
 
@@ -137,7 +137,7 @@ app.delete("/api/logout", upload.none(), (req, res) => {
     res.clearCookie("token", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production" ? true : false,
-      sameSite: "Strict",
+      sameSite: "None",
     });
     res.status(200).json({ message: "Logout successful" });
   } else {
