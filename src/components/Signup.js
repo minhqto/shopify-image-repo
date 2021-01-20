@@ -101,7 +101,7 @@ export default function Signup() {
         </Typography>
         <form
           className={classes.form}
-          enctype="multipart/form-data"
+          encType="multipart/form-data"
           onSubmit={(event) => handleSubmit(event)}
         >
           <Grid container spacing={2}>
