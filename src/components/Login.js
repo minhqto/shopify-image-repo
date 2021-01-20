@@ -59,8 +59,10 @@ export default function Login() {
 
   const handleSignInClick = (event) => {
     event.preventDefault();
+
     setIsLoggingIn(true);
     setIsError(false);
+
     let formData = new FormData();
     formData.append("username", account.username);
     formData.append("password", account.password);
@@ -149,8 +151,8 @@ export default function Login() {
         <Alert color="danger" hidden={!isError}>
           {errorMessage}
         </Alert>
-        <Spinner hidden={!isLoggingIn}></Spinner>
-        <Alert color="secondary" hidden={!isLoggingIn}>
+        <Spinner hidden={!isLoggedIn}></Spinner>
+        <Alert color="secondary" hidden={!isLoggedIn}>
           Heroku pls...
         </Alert>
       </div>
