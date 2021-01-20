@@ -25,8 +25,7 @@ const { initializeMongo } = require("./data-service-auth");
 
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
-const jwtSecret = process.env.JWTSECRET;
-
+let jwtSecret = process.env.JWTSECRET;
 app.use(cookieParser());
 app.use(cors({ credentials: true, origin: true }));
 
@@ -110,8 +109,8 @@ app.post("/api/login", upload.none(), (req, res) => {
       let token = jwt.sign(payload, jwtSecret, { expiresIn: 3600 });
       res.cookie("token", token, {
         httpOnly: true,
-        // secure: true,
-        // sameSite: "None",
+        secure: process.env.NODE_ENV === "production" ? true : false,
+        sameSite: "Strict",
       });
       // Prod setting
 
@@ -123,26 +122,22 @@ app.post("/api/login", upload.none(), (req, res) => {
     });
 });
 
-app.delete(
-  "/api/image/:id",
-
-  (req, res) => {
-    deleteImage(req.params.id)
-      .then((data) => {
-        res.status(200).send(data);
-      })
-      .catch((err) => {
-        res.status(500).send(err);
-      });
-  }
-);
+app.delete("/api/image/:id", (req, res) => {
+  deleteImage(req.params.id)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
 
 app.delete("/api/logout", upload.none(), (req, res) => {
   if (req.cookies) {
     res.clearCookie("token", {
       httpOnly: true,
-      // secure: true,
-      // sameSite: "None",
+      secure: process.env.NODE_ENV === "production" ? true : false,
+      sameSite: "Strict",
     });
     res.status(200).json({ message: "Logout successful" });
   } else {
