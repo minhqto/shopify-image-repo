@@ -151,8 +151,8 @@ export default function Login() {
         <Alert color="danger" hidden={!isError}>
           {errorMessage}
         </Alert>
-        <Spinner hidden={!isLoggedIn}></Spinner>
-        <Alert color="secondary" hidden={!isLoggedIn}>
+        <Spinner hidden={!isLoggingIn}></Spinner>
+        <Alert color="secondary" hidden={!isLoggingIn}>
           Heroku pls...
         </Alert>
       </div>
