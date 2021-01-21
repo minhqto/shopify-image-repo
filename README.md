@@ -4,7 +4,7 @@ This project was a part of Shopify's Summer 2021 Backend Developer Intern techni
 
 ## Usage
 
-1. Go to https://imagify2021.vercel.app
+1. Go to https://imagify2021.tech
 2. Sign up if you don't already have an account, then log in once redirected
 3. Check out all the photos.
 4. Upload your photos!
