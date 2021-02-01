@@ -50,6 +50,7 @@ This project was a part of Shopify's Summer 2021 Backend Developer Intern techni
 > Fix the hamburger menu response when the page's width is adjusted
 >
 > Further protect the API to prevent CSRF attacks
+> Dockerize and deploy to GCR and try out nginx!
 
 ## Credits
 
